@@ -1,7 +1,5 @@
-package mds.biblioteca.dto;
-
 // src/main/java/mds/biblioteca/dto/PrestamoDtos.java
-package mds.biblioteca.dto;
+package mds.biblioteca.dto; // Asegúrate de que el paquete sea correcto
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,41 +8,38 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 /**
- * DTO para mostrar información detallada de un préstamo,
- * incluyendo datos básicos del libro y socio asociados.
- * Usado para GET endpoints.
+ * DTO para mostrar información detallada de un préstamo.
+ * Usado para respuestas GET y PUT.
  */
 @Data
 @NoArgsConstructor
-class PrestamoDto { // Renombrado de PrestamoDtos a PrestamoDto para claridad
+class PrestamoDto { // Nota: 'class' es correcto, no necesita 'public' si está en el mismo archivo
     private Long idPrestamo;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private LocalDate fechaDevolucion; // Será null si no se ha devuelto
+    private LocalDate fechaDevolucion;
     private Long idLibro;
-    private String libroTitulo; // Para mostrar en el frontend
+    private String libroTitulo;
     private Long idSocio;
-    private String socioNroSocio; // Para mostrar en el frontend
+    private String socioNroSocio;
 }
 
 /**
- * DTO para actualizar campos específicos de un préstamo existente.
- * Usado para PUT endpoints. ¡Usar con precaución!
+ * DTO para actualizar campos de un préstamo existente.
+ * Usado para el body de PUT /prestamos/{id}.
  */
 @Data
 @NoArgsConstructor
-class PrestamoUpdateDto { // Renombrado de PrestamoDtos a PrestamoUpdateDto para claridad
-    // Campos que se pueden modificar (opcionalmente)
+class PrestamoUpdateDto {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private LocalDate fechaDevolucion;
 }
 
-// Puedes añadir otros DTOs relacionados con Prestamo aquí si es necesario en el futuro.
-// Por ejemplo, PrestamoRequestDto y DevolucionRequestDto podrían estar aquí también,
-// pero es común mantenerlos separados si sus usos son muy distintos.
-
-// DTO para registrar un préstamo (ya lo tenías)
+/**
+ * DTO para registrar un nuevo préstamo.
+ * Usado para el body de POST /prestamos/registrar.
+ */
 @Data
 @NoArgsConstructor
 class PrestamoRequestDto {
@@ -52,7 +47,10 @@ class PrestamoRequestDto {
     @NotBlank private String nroSocio;
 }
 
-// DTO para registrar una devolución (ya lo tenías)
+/**
+ * DTO para registrar una devolución.
+ * Usado para el body de POST /prestamos/devolver.
+ */
 @Data
 @NoArgsConstructor
 class DevolucionRequestDto {
@@ -60,3 +58,8 @@ class DevolucionRequestDto {
     @NotBlank private String nroSocio;
     @NotNull private Boolean buenasCondiciones;
 }
+
+// Nota: Puedes hacer estas clases 'public' si prefieres,
+// pero no es estrictamente necesario si solo se usan dentro
+// del mismo paquete o por clases que importan el paquete.
+// Dejarlas sin 'public' (package-private) es común para DTOs internos.
