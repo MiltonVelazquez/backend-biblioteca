@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class Prestamo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IDPrestamo; // [cite: 22]
+    private Long idPrestamo; // [cite: 22]
     
     private LocalDate fechaInicio; // [cite: 22]
     private LocalDate fechaFin; // [cite: 22]
