@@ -23,6 +23,78 @@ import java.util.Map;       // Importar Map
 // --- ¡NO DEFINIR DTOS AQUÍ! ---
 // Las definiciones de PrestamoRequestDto, DevolucionRequestDto, etc.
 // deben estar en el paquete 'dto'.
+// DTOs para Préstamo y Devolución
+
+@Data
+
+@NoArgsConstructor
+
+class PrestamoRequestDto{ 
+
+    @NotNull Long idLibro;
+
+    @NotBlank String nroSocio;
+
+}
+
+@Data
+
+@NoArgsConstructor
+
+class DevolucionRequestDto{ 
+
+    @NotNull Long idLibro;
+
+    @NotBlank String nroSocio;
+
+    @NotNull Boolean buenasCondiciones;
+
+}
+
+
+
+@Data
+
+@NoArgsConstructor
+
+public class PrestamoDto {
+
+    private Long idPrestamo;
+
+    private LocalDate fechaInicio;
+
+    private LocalDate fechaFin;
+
+    private LocalDate fechaDevolucion; // Será null si no se ha devuelto
+
+    private Long idLibro;
+
+    private String libroTitulo; // Para mostrar en el frontend
+
+    private Long idSocio;
+
+    private String socioNroSocio; // Para mostrar en el frontend
+
+}
+
+
+
+@Data
+
+@NoArgsConstructor
+
+public class PrestamoUpdateDto {
+
+    // Es raro modificar estas fechas, pero posible para corregir errores.
+
+    private LocalDate fechaInicio; 
+
+    private LocalDate fechaFin;
+
+    private LocalDate fechaDevolucion; // Podría usarse para corregir una devolución
+
+}
+
 
 @RestController
 @RequestMapping("/api/v1/prestamos")
