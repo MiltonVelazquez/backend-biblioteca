@@ -1,6 +1,9 @@
 // src/main/java/mds/biblioteca/service/PrestamoService.java
 package mds.biblioteca.service;
 
+// --- ¡ASEGÚRATE DE IMPORTAR TUS DTOS DESDE EL PAQUETE CORRECTO! ---
+import mds.biblioteca.dto.PrestamoUpdateDto; 
+
 import mds.biblioteca.model.Libro;
 import mds.biblioteca.model.Prestamo;
 import mds.biblioteca.model.Socio;
@@ -10,9 +13,10 @@ import mds.biblioteca.repository.SocioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.data.domain.Page; 
+import org.springframework.data.domain.Pageable; 
 import java.time.LocalDate;
-import java.util.List;
+// Quita los imports innecesarios de validation, lombok, etc.
 
 @Service
 public class PrestamoService {
@@ -27,80 +31,103 @@ public class PrestamoService {
     private LibroRepository libroRepository;
 
     @Autowired
-    private MultaService multaService; // Para verificar y crear multas
+    private MultaService multaService; 
 
     private static final int DIAS_PRESTAMO = 15;
 
-    /**
-     * Implementa el flujo "Préstamo"[cite: 42].
-     */
     @Transactional
     public Prestamo registrarPrestamo(Long idLibro, String nroSocio) {
         
-        // 1. "Verificar socio válido" [cite: 71]
+        // 1. Verificar socio válido
         Socio socio = socioRepository.findByNroSocio(nroSocio)
                 .orElseThrow(() -> new RuntimeException("Socio no válido con Nro: " + nroSocio));
 
-        // 2. "¿Multas pendientes?" [cite: 76]
+        // 2. ¿Multas pendientes?
         if (!multaService.obtenerMultasPendientes(nroSocio).isEmpty()) {
-            // "Informar que debe pagar" [cite: 78]
             throw new RuntimeException("El socio tiene multas pendientes y no puede retirar libros.");
         }
 
-        // 3. "¿Libro existe?" y "¿Hay edición?" (verificando estado) [cite: 49, 55]
+        // 3. ¿Libro existe y está disponible?
         Libro libro = libroRepository.findById(idLibro)
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado con ID: " + idLibro));
         
         if (!libro.getEstado().equalsIgnoreCase("Disponible")) {
-            // "Informar que no hay edición" (o no está disponible) [cite: 70]
             throw new RuntimeException("El libro no se encuentra disponible para préstamo.");
         }
+        
+        // --- CÓDIGO DUPLICADO ELIMINADO ---
 
-        // 4. "Registrar préstamo" [cite: 79]
+        // 4. Crear y guardar el préstamo
         Prestamo prestamo = new Prestamo();
         prestamo.setSocio(socio);
         prestamo.setLibro(libro);
         prestamo.setFechaInicio(LocalDate.now());
         prestamo.setFechaFin(LocalDate.now().plusDays(DIAS_PRESTAMO));
-        prestamo.setFechaDevolucion(null); // Aún no se ha devuelto
-
-        // 5. "Entregar libro" (actualizar estado del libro) [cite: 81]
+        prestamo.setFechaDevolucion(null); 
+        
+        // 5. Actualizar estado del libro
         libro.setEstado("Prestado");
         libroRepository.save(libro);
-
+        
         return prestamoRepository.save(prestamo);
     }
 
-    /**
-     * Implementa el flujo "Devolución"[cite: 59].
-     */
     @Transactional
     public void registrarDevolucion(Long idLibro, String nroSocio, boolean buenasCondiciones) {
         
-        // 1. "Socio entrega libro" - Encontrar el libro [cite: 60]
+        // 1. Encontrar el libro
         Libro libro = libroRepository.findById(idLibro)
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado con ID: " + idLibro));
 
-        // 2. "¿Prestamo existe?" (Buscamos un préstamo ACTIVO para este libro) [cite: 65]
+        // 2. Encontrar el préstamo activo para ese libro
         Prestamo prestamo = prestamoRepository.findByLibroAndFechaDevolucionIsNull(libro)
                 .orElseThrow(() -> new RuntimeException("No se encontró un préstamo activo para este libro."));
 
-        // 3. "Registrar devolución" (marcar la fecha) [cite: 67]
+        // 3. Registrar fecha de devolución
         prestamo.setFechaDevolucion(LocalDate.now());
         
-        // 4. "Revisar estado físico" y "¿Libro en buenas condiciones?" [cite: 82, 83]
+        // 4. Revisar estado y actualizar/multar
         if (buenasCondiciones) {
-            // "Si" -> "Confirmar devolución" [cite: 72, 73]
             libro.setEstado("Disponible");
         } else {
-            // "No" -> "Registrar multa" [cite: 84, 85]
-            libro.setEstado("En Reparacion"); // El libro no puede volver a "Disponible"
+            libro.setEstado("En Reparacion"); 
             multaService.crearMultaPorDevolucion(prestamo);
-            // "Notificar al socio" (se maneja dentro de multaService) [cite: 86]
         }
+        
+        // --- CÓDIGO DUPLICADO ELIMINADO ---
 
-        // Guardar los cambios en la BBDD
+        // 5. Guardar cambios
         libroRepository.save(libro);
         prestamoRepository.save(prestamo);
+    }
+
+    // --- Métodos NUEVOS (Estos estaban bien) ---
+
+    @Transactional(readOnly = true)
+    public Page<Prestamo> obtenerTodos(Pageable pageable) {
+        return prestamoRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Prestamo> obtenerDevoluciones(Pageable pageable) {
+        return prestamoRepository.findByFechaDevolucionIsNotNull(pageable);
+    }
+
+    @Transactional
+    public Prestamo actualizarPrestamo(Long idPrestamo, PrestamoUpdateDto dto) {
+        Prestamo prestamo = prestamoRepository.findById(idPrestamo)
+                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado con ID: " + idPrestamo));
+
+        if (dto.getFechaInicio() != null) {
+            prestamo.setFechaInicio(dto.getFechaInicio());
+        }
+        if (dto.getFechaFin() != null) {
+            prestamo.setFechaFin(dto.getFechaFin());
+        }
+        if (dto.getFechaDevolucion() != null) {
+            prestamo.setFechaDevolucion(dto.getFechaDevolucion());
+        }
+
+        return prestamoRepository.save(prestamo);
     }
 }
