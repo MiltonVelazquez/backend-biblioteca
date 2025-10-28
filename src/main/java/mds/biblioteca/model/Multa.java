@@ -11,7 +11,7 @@ public class Multa {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IDMulta; // [cite: 13]
+    private Long idMulta; // [cite: 13]
     
     private Double monto; // [cite: 14]
     
