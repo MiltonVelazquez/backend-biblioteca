@@ -11,7 +11,11 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 
-# Descargamos las dependencias
+# ---- AÑADE ESTA LÍNEA ----
+# Damos permisos de ejecución al wrapper de Maven
+RUN chmod +x mvnw
+
+# Ahora sí, descargamos las dependencias
 RUN ./mvnw dependency:go-offline
 
 # Copiamos el resto del código fuente
