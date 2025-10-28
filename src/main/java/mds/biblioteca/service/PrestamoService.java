@@ -2,7 +2,7 @@
 package mds.biblioteca.service;
 
 // --- ¡ASEGÚRATE DE IMPORTAR TUS DTOS DESDE EL PAQUETE CORRECTO! ---
-import mds.biblioteca.dto.PrestamoUpdateDto; 
+import mds.biblioteca.dto.PrestamoDtos; 
 
 import mds.biblioteca.model.Libro;
 import mds.biblioteca.model.Prestamo;
