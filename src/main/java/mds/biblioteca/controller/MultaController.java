@@ -23,14 +23,14 @@ import java.util.stream.Collectors;
 // DTOs para Préstamo y Devolución
 @Data
 @NoArgsConstructor
-class PrestamoRequestDto{ 
+class PrestamoMultaRequestDto{ 
     @NotNull Long idLibro;
     @NotBlank String nroSocio;
 }
 
 @Data
 @NoArgsConstructor
-class DevolucionRequestDto{ 
+class DevolucionMultaRequestDto{ 
     @NotNull Long idLibro;
     @NotBlank String nroSocio;
     @NotNull Boolean buenasCondiciones;
