@@ -9,7 +9,7 @@ import java.util.Set;
 public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IDLibro; // [cite: 27]
+    private Long idLibro; // [cite: 27]
     private String titulo; // [cite: 28]
     private String autor; // [cite: 29]
     private String isbn; // [cite: 30]
