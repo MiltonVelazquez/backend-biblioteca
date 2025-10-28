@@ -1,0 +1,62 @@
+package mds.biblioteca.dto;
+
+// src/main/java/mds/biblioteca/dto/PrestamoDtos.java
+package mds.biblioteca.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDate;
+
+/**
+ * DTO para mostrar información detallada de un préstamo,
+ * incluyendo datos básicos del libro y socio asociados.
+ * Usado para GET endpoints.
+ */
+@Data
+@NoArgsConstructor
+class PrestamoDto { // Renombrado de PrestamoDtos a PrestamoDto para claridad
+    private Long idPrestamo;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private LocalDate fechaDevolucion; // Será null si no se ha devuelto
+    private Long idLibro;
+    private String libroTitulo; // Para mostrar en el frontend
+    private Long idSocio;
+    private String socioNroSocio; // Para mostrar en el frontend
+}
+
+/**
+ * DTO para actualizar campos específicos de un préstamo existente.
+ * Usado para PUT endpoints. ¡Usar con precaución!
+ */
+@Data
+@NoArgsConstructor
+class PrestamoUpdateDto { // Renombrado de PrestamoDtos a PrestamoUpdateDto para claridad
+    // Campos que se pueden modificar (opcionalmente)
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private LocalDate fechaDevolucion;
+}
+
+// Puedes añadir otros DTOs relacionados con Prestamo aquí si es necesario en el futuro.
+// Por ejemplo, PrestamoRequestDto y DevolucionRequestDto podrían estar aquí también,
+// pero es común mantenerlos separados si sus usos son muy distintos.
+
+// DTO para registrar un préstamo (ya lo tenías)
+@Data
+@NoArgsConstructor
+class PrestamoRequestDto {
+    @NotNull private Long idLibro;
+    @NotBlank private String nroSocio;
+}
+
+// DTO para registrar una devolución (ya lo tenías)
+@Data
+@NoArgsConstructor
+class DevolucionRequestDto {
+    @NotNull private Long idLibro;
+    @NotBlank private String nroSocio;
+    @NotNull private Boolean buenasCondiciones;
+}
