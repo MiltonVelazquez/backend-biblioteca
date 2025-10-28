@@ -13,7 +13,7 @@ import java.time.LocalDate;
  */
 @Data
 @NoArgsConstructor
-class PrestamoDto { // Nota: 'class' es correcto, no necesita 'public' si está en el mismo archivo
+public class PrestamoDto { // Nota: 'class' es correcto, no necesita 'public' si está en el mismo archivo
     private Long idPrestamo;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
@@ -30,7 +30,7 @@ class PrestamoDto { // Nota: 'class' es correcto, no necesita 'public' si está 
  */
 @Data
 @NoArgsConstructor
-class PrestamoUpdateDto {
+public class PrestamoUpdateDto {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private LocalDate fechaDevolucion;
@@ -42,7 +42,7 @@ class PrestamoUpdateDto {
  */
 @Data
 @NoArgsConstructor
-class PrestamoRequestDto {
+public class PrestamoRequestDto {
     @NotNull private Long idLibro;
     @NotBlank private String nroSocio;
 }
@@ -53,7 +53,7 @@ class PrestamoRequestDto {
  */
 @Data
 @NoArgsConstructor
-class DevolucionRequestDto {
+public class DevolucionRequestDto {
     @NotNull private Long idLibro;
     @NotBlank private String nroSocio;
     @NotNull private Boolean buenasCondiciones;
