@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MultaDTO{ 
-    Long IDMulta;
-    Double Monto;
-    Long Id_Prestamo;
+    Long idMulta;
+    Double monto;
+    Long idPrestamo;
     String socioNombreCompleto;
     String socioNroSocio;
     boolean pagada;
