@@ -9,7 +9,7 @@ import java.util.Set;
 public class Socio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long IDSocio; // [cite: 17]
+    private Long idSocio; // [cite: 17]
     private String nombre; // [cite: 17]
     private String apellido; // [cite: 18]
     @Column(unique = true)
