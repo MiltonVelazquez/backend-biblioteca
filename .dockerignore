@@ -1,0 +1,15 @@
+# Ignorar la carpeta de compilación local
+target/
+
+# Ignorar logs locales
+*.log
+*.log.*
+
+# Ignorar archivos de IDE
+.idea/
+*.iml
+.vscode/
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
