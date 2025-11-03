@@ -1,5 +1,6 @@
 package mds.biblioteca.service;
 
+import mds.biblioteca.dto.MultaUpdateDto;
 import mds.biblioteca.model.Multa;
 import mds.biblioteca.model.Prestamo;
 import mds.biblioteca.model.Socio;
@@ -82,5 +83,17 @@ public class MultaService {
     @Transactional(readOnly = true)
     public List<Multa> obtenerTodas() {
         return multaRepository.findAll();
+    }
+
+    @Transactional
+    public Multa actualizarMonto(Long idMulta, MultaUpdateDto dto) {
+        Multa multa = obtenerPorId(idMulta); // Reutiliza tu método
+        
+        if (multa.isPagada()) {
+            throw new RuntimeException("No se puede modificar una multa que ya ha sido pagada.");
+        }
+
+        multa.setMonto(dto.getMonto());
+        return multaRepository.save(multa);
     }
 }
