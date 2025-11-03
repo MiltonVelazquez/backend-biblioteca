@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 class LibroDto{ 
-    Long IDLibro;
+    Long idLibro;
     String titulo; 
     String autor; 
     String isbn;
