@@ -1,8 +1,6 @@
-// src/main/java/mds/biblioteca/controller/MultaController.java
 package mds.biblioteca.controller;
 
-// --- IMPORTS CORRECTOS ---
-import mds.biblioteca.dto.MultaDTO; // Desde el paquete dto
+import mds.biblioteca.dto.MultaDTO; 
 import mds.biblioteca.model.Multa;
 import mds.biblioteca.service.MultaService;
 import org.modelmapper.ModelMapper;
@@ -10,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import mds.biblioteca.dto.MultaUpdateDto; 
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-// --- NO DEFINIR DTOS AQUÍ ---
 
 @RestController
 @RequestMapping("/api/v1/multas")
@@ -69,5 +67,15 @@ public class MultaController {
         }
         // ModelMapper debería manejar idPrestamo si los nombres coinciden en camelCase
         return dto;
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateMontoMulta(@PathVariable Long id, @Valid @RequestBody MultaUpdateDto multaDto) {
+        try {
+            Multa multaActualizada = multaService.actualizarMonto(id, multaDto);
+            return ResponseEntity.ok(convertirADto(multaActualizada)); // Asumiendo que tu helper se llama convertirADto
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body(Map.of("error", e.getMessage()));
+        }
     }
 }
