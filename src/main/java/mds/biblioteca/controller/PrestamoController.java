@@ -81,12 +81,12 @@ public class PrestamoController {
         } catch (RuntimeException e) {
              return ResponseEntity.status(HttpStatus.NOT_FOUND)
                                   .body(Map.of("error", e.getMessage()));
-        }
-    }
-
-    // --- Método Helper (Sin cambios) ---
+        }}
+    // --- Método Helper (Corregido) ---
     private PrestamoDto convertirAPrestamoDto(Prestamo prestamo) {
         PrestamoDto dto = modelMapper.map(prestamo, PrestamoDto.class);
+        
+        // ¡Ahora sí llamará a los getters camelCase correctos!
         if (prestamo.getLibro() != null) {
             dto.setIdLibro(prestamo.getLibro().getIdLibro());
             dto.setLibroTitulo(prestamo.getLibro().getTitulo());
