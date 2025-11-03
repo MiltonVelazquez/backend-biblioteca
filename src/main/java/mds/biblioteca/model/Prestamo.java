@@ -17,12 +17,12 @@ public class Prestamo {
 
     // Relación (N,1) con Socio
     @ManyToOne
-    @JoinColumn(name = "Id_Socio", referencedColumnName = "IDSocio") // [cite: 22]
+    @JoinColumn(name = "id_socio", referencedColumnName = "idSocio") // [cite: 22]
     private Socio socio;
 
     // Relación (N,1) con Libro
     @ManyToOne
-    @JoinColumn(name = "Id_Libro", referencedColumnName = "IDLibro") // [cite: 22]
+    @JoinColumn(name = "id_libro", referencedColumnName = "idLibro") // [cite: 22]
     private Libro libro;
 
     // Relación (1,1) con Multa [cite: 15]
