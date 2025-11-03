@@ -24,10 +24,10 @@ public class Multa {
     // --- Relaciones del Diagrama ---
     
     @ManyToOne
-    @JoinColumn(name = "Id_Socio", referencedColumnName = "IDSocio") // [cite: 14]
+    @JoinColumn(name = "id_socio", referencedColumnName = "idSocio") // [cite: 14]
     private Socio socio;
 
     @OneToOne
-    @JoinColumn(name = "Id_Prestamo", referencedColumnName = "IDPrestamo") // [cite: 14, 15]
+    @JoinColumn(name = "id_prestamo", referencedColumnName = "idPrestamo") // [cite: 14, 15]
     private Prestamo prestamo;
 }
