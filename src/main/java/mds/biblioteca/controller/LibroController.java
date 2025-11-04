@@ -1,4 +1,3 @@
-// src/main/java/com/utn/frre/biblioteca/controller/LibroController.java
 package mds.biblioteca.controller;
 
 import mds.biblioteca.model.Libro;
@@ -19,7 +18,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// DTO para respuesta de búsqueda de libro
 @Data
 @NoArgsConstructor
 class LibroDto{ 
@@ -49,14 +47,12 @@ public class LibroController {
     @Autowired
     private ModelMapper modelMapper;
 
-    // buscar
     @GetMapping("/buscar")
     public ResponseEntity<List<LibroDto>> buscarLibros(
             @RequestParam(required = false) String titulo) {
         
         List<Libro> libros = libroService.buscarLibrosDisponibles(titulo);
         
-        // confirma si existe el libro
         List<LibroDto> librosDto = libros.stream()
                 .map(libro -> modelMapper.map(libro, LibroDto.class))
                 .collect(Collectors.toList());
@@ -64,21 +60,18 @@ public class LibroController {
         return ResponseEntity.ok(librosDto);
     }
     
-    // crear libro
     @PostMapping
     public ResponseEntity<LibroDto> createLibro(@Valid @RequestBody LibroCreateUpdateDto libroDto) {
         Libro nuevoLibro = libroService.crearLibro(modelMapper.map(libroDto, Libro.class));
         return ResponseEntity.status(HttpStatus.CREATED)
                              .body(modelMapper.map(nuevoLibro, LibroDto.class));
     }
-    // buscar libro por id
     @GetMapping("/{id}")
     public ResponseEntity<LibroDto> getLibroById(@PathVariable Long id) {
         Libro libro = libroService.obtenerPorId(id);
         return ResponseEntity.ok(modelMapper.map(libro, LibroDto.class));
     }
 
-    // obtener libros paginados
     @GetMapping
     public ResponseEntity<Page<LibroDto>> getAllLibros(Pageable pageable) {
         Page<Libro> paginaLibros = libroService.obtenerTodosPaginado(pageable);
@@ -86,7 +79,6 @@ public class LibroController {
         return ResponseEntity.ok(paginaDto);
     }
 
-    // actualizar libro
     @PutMapping("/{id}")
     public ResponseEntity<LibroDto> updateLibro(@PathVariable Long id, 
                                                 @Valid @RequestBody LibroCreateUpdateDto libroDto) {
@@ -94,7 +86,6 @@ public class LibroController {
         return ResponseEntity.ok(modelMapper.map(libroActualizado, LibroDto.class));
     }
 
-    // eliminar libro
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLibro(@PathVariable Long id) {
         libroService.eliminarLibro(id);

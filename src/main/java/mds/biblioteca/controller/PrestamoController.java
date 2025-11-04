@@ -1,14 +1,10 @@
-// src/main/java/mds/biblioteca/controller/PrestamoController.java
 package mds.biblioteca.controller;
 
-// --- ¡IMPORTS ACTUALIZADOS! ---
-// Ahora importamos todos los DTOs desde el paquete 'dto'
 import mds.biblioteca.dto.PrestamoDto;
 import mds.biblioteca.dto.PrestamoUpdateDto;
 import mds.biblioteca.dto.PrestamoRequestDto;
 import mds.biblioteca.dto.DevolucionRequestDto;
 
-// --- Resto de imports necesarios ---
 import mds.biblioteca.model.Prestamo;
 import mds.biblioteca.service.PrestamoService;
 import jakarta.validation.Valid;
@@ -20,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
-// Ya no necesitas import java.time.LocalDate aquí
 
 @RestController
 @RequestMapping("/api/v1/prestamos")
@@ -32,7 +27,6 @@ public class PrestamoController {
     @Autowired
     private ModelMapper modelMapper;
 
-    // --- Endpoints (Sin cambios en la lógica interna) ---
     @PostMapping("/registrar")
     public ResponseEntity<?> registrarPrestamo(@Valid @RequestBody PrestamoRequestDto request) {
         try {
@@ -82,11 +76,10 @@ public class PrestamoController {
              return ResponseEntity.status(HttpStatus.NOT_FOUND)
                                   .body(Map.of("error", e.getMessage()));
         }}
-    // --- Método Helper (Corregido) ---
+
     private PrestamoDto convertirAPrestamoDto(Prestamo prestamo) {
         PrestamoDto dto = modelMapper.map(prestamo, PrestamoDto.class);
         
-        // ¡Ahora sí llamará a los getters camelCase correctos!
         if (prestamo.getLibro() != null) {
             dto.setIdLibro(prestamo.getLibro().getIdLibro());
             dto.setLibroTitulo(prestamo.getLibro().getTitulo());

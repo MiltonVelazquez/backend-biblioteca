@@ -28,7 +28,7 @@ public class MultaController {
     public ResponseEntity<List<MultaDTO>> getMultasPendientesPorSocio(@PathVariable String nroSocio) {
         List<Multa> multas = multaService.obtenerMultasPendientes(nroSocio);
         return ResponseEntity.ok(multas.stream()
-                .map(this::convertirADto) // Usa el helper corregido
+                .map(this::convertirADto) 
                 .collect(Collectors.toList()));
     }
 
@@ -47,17 +47,16 @@ public class MultaController {
     public ResponseEntity<List<MultaDTO>> getAllMultas() {
         List<Multa> multas = multaService.obtenerTodas();
         return ResponseEntity.ok(multas.stream()
-                .map(this::convertirADto) // Usa el helper corregido
+                .map(this::convertirADto) 
                 .collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MultaDTO> getMultaById(@PathVariable Long id) {
         Multa multa = multaService.obtenerPorId(id);
-        return ResponseEntity.ok(convertirADto(multa)); // Usa el helper corregido
+        return ResponseEntity.ok(convertirADto(multa)); 
     }
 
-    // --- HELPER CORREGIDO ---
     private MultaDTO convertirADto(Multa multa) {
         MultaDTO dto = modelMapper.map(multa, MultaDTO.class);
 
@@ -65,7 +64,6 @@ public class MultaController {
             dto.setSocioNombreCompleto(multa.getSocio().getNombre() + " " + multa.getSocio().getApellido());
             dto.setSocioNroSocio(multa.getSocio().getNroSocio());
         }
-        // ModelMapper debería manejar idPrestamo si los nombres coinciden en camelCase
         return dto;
     }
     @PutMapping("/{id}")

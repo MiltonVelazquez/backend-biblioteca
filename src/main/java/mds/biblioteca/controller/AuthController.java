@@ -1,7 +1,6 @@
-// src/main/java/com/utn/frre/biblioteca/controller/AuthController.java
 package mds.biblioteca.controller;
 
-import mds.biblioteca.security.JwtTokenProvider; // (Clase de utilidad JWT no mostrada)
+import mds.biblioteca.security.JwtTokenProvider;
 import mds.biblioteca.service.UsuarioService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-// DTOs para Login
 record LoginRequest(@NotBlank String username, @NotBlank String password) {}
 record RegisterRequest(
     @NotBlank @Size(min = 3, max = 20) String username,
@@ -35,7 +33,7 @@ record JwtAuthenticationResponse(String token) {}
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    @Autowired // 3. AQUÍ SE INYECTA
+    @Autowired 
     UsuarioService usuarioService;
 
     @Autowired
@@ -60,10 +58,6 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
     
-    /**
-     * Endpoint de Registro.
-     * Crea un nuevo usuario (bibliotecario) en el sistema.
-     */
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         try {

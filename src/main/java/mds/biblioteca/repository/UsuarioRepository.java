@@ -10,12 +10,9 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    // Método para que Spring Security encuentre usuarios al hacer login
     Optional<Usuario> findByUsername(String username);
 
-    // Método para la lógica de registro
     Boolean existsByUsername(String username);
 
-    // Método para la lógica de registro
     Boolean existsByEmail(String email);
 }

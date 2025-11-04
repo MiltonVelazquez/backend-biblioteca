@@ -1,4 +1,3 @@
-// src/main/java/mds/biblioteca/security/SecurityConfig.java
 package mds.biblioteca.security;
 
 import org.springframework.context.annotation.Bean;
@@ -17,50 +16,39 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static org.springframework.security.config.Customizer.withDefaults; // <-- ¡Importante!
+import static org.springframework.security.config.Customizer.withDefaults; 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // (Aquí va tu bean de JwtAuthenticationFilter si lo tienes)
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // ---- 1. AÑADE ESTA LÍNEA PARA ACTIVAR CORS ----
             .cors(withDefaults()) 
             
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // (Aquí van tus reglas de requestMatchers)
-                .anyRequest().permitAll() // Permite todo (como lo tenías)
+                .anyRequest().permitAll() 
             );
             
-        // (Aquí añades tu filtro JWT si lo tienes)
 
         return http.build();
     }
 
-    // ---- 2. AÑADE ESTE BEAN COMPLETO ----
-    // Este bean define la configuración de CORS
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Permite peticiones desde CUALQUIER origen.
-        // Para más seguridad, reemplaza "*" con la URL de tu Replit.
         configuration.setAllowedOrigins(List.of("*")); 
         
-        // Permite los métodos HTTP más comunes
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         
-        // Permite cabeceras comunes
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Aplica esta config a TODAS las rutas
+        source.registerCorsConfiguration("/**", configuration); 
         return source;
     }
 

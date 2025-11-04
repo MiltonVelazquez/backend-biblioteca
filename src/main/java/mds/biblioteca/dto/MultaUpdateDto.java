@@ -1,4 +1,3 @@
-// src/main/java/mds/biblioteca/dto/MultaUpdateDto.java
 package mds.biblioteca.dto;
 
 import jakarta.validation.constraints.NotNull;

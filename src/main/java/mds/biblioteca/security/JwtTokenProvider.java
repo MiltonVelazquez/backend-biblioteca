@@ -27,7 +27,6 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(Authentication authentication) {
-        // En una app real, aquí se usaría authentication.getPrincipal()
         String username = authentication.getName();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
@@ -40,5 +39,4 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // (Aquí irían los métodos para validar el token, no incluidos por brevedad)
 }

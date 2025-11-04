@@ -22,34 +22,24 @@ public class MultaService {
     @Autowired
     private SocioRepository socioRepository;
 
-    // Valor fijo para multas por daño
-    private static final Double MONTO_MULTA_POR_DANIO = 50.0;
+    private static final Double MONTO_MULTA_POR_DANIO = 5000.0;
 
-    /**
-     * Implementa la lógica "Registrar multa" del flujo de Devolución. 
-     * Se llama cuando un libro se devuelve en malas condiciones.
-     */
     @Transactional
     public Multa crearMultaPorDevolucion(Prestamo prestamo) {
         Multa multa = new Multa();
-        multa.setPrestamo(prestamo); // [cite: 14]
-        multa.setSocio(prestamo.getSocio()); // [cite: 14]
-        multa.setMonto(MONTO_MULTA_POR_DANIO); // [cite: 14]
+        multa.setPrestamo(prestamo);
+        multa.setSocio(prestamo.getSocio()); 
+        multa.setMonto(MONTO_MULTA_POR_DANIO); 
         multa.setFechaGeneracion(LocalDate.now());
         multa.setPagada(false);
         
         Multa multaGuardada = multaRepository.save(multa);
         
-        // Aquí iría la lógica de "Notificar al socio" [cite: 86]
         System.out.println("NOTIFICACIÓN: Se ha registrado una multa al socio " + prestamo.getSocio().getNombre());
         
         return multaGuardada;
     }
 
-    /**
-     * Implementa la lógica "¿Multas pendientes?" del flujo de Préstamo. 
-     * Busca multas no pagadas para un socio específico.
-     */
     @Transactional(readOnly = true)
     public List<Multa> obtenerMultasPendientes(String nroSocio) {
         Socio socio = socioRepository.findByNroSocio(nroSocio)
@@ -58,10 +48,6 @@ public class MultaService {
         return multaRepository.findBySocioAndPagadaIsFalse(socio);
     }
     
-    /**
-     * Implementa la acción de pagar una multa, necesaria para 
-     * limpiar el estado de "multas pendientes".
-     */
     @Transactional
     public void pagarMulta(Long idMulta) {
         Multa multa = obtenerPorId(idMulta);
@@ -71,8 +57,6 @@ public class MultaService {
         multa.setPagada(true);
         multaRepository.save(multa);
     }
-
-    // --- Métodos CRUD Estándar ---
 
     @Transactional(readOnly = true)
     public Multa obtenerPorId(Long id) {
@@ -87,7 +71,7 @@ public class MultaService {
 
     @Transactional
     public Multa actualizarMonto(Long idMulta, MultaUpdateDto dto) {
-        Multa multa = obtenerPorId(idMulta); // Reutiliza tu método
+        Multa multa = obtenerPorId(idMulta); 
         
         if (multa.isPagada()) {
             throw new RuntimeException("No se puede modificar una multa que ya ha sido pagada.");

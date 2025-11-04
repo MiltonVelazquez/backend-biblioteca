@@ -9,22 +9,20 @@ import java.time.LocalDate;
 public class Prestamo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPrestamo; // [cite: 22]
-    
-    private LocalDate fechaInicio; // [cite: 22]
-    private LocalDate fechaFin; // [cite: 22]
-    private LocalDate fechaDevolucion; // [cite: 22]
+    private Long idPrestamo; 
+    private LocalDate fechaInicio; 
+    private LocalDate fechaFin;
+    private LocalDate fechaDevolucion; 
 
    
     @ManyToOne
-    @JoinColumn(name = "id_socio", referencedColumnName = "idSocio") // <-- CORREGIDO
+    @JoinColumn(name = "id_socio", referencedColumnName = "idSocio") 
     private Socio socio;
 
     @ManyToOne
-    @JoinColumn(name = "id_libro", referencedColumnName = "idLibro") // <-- CORREGIDO
+    @JoinColumn(name = "id_libro", referencedColumnName = "idLibro") 
     private Libro libro;
 
-    // Relación (1,1) con Multa [cite: 15]
     @OneToOne(mappedBy = "prestamo")
     private Multa multa;
 }

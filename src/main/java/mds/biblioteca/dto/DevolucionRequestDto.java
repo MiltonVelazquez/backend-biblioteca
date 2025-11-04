@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class DevolucionRequestDto {
-    // ¡AÑADIR private Y @NotNull!
     @NotNull private Long idLibro;
-    @NotNull private String nroSocio; // @NotBlank también es válido
+    @NotNull private String nroSocio; 
     @NotNull private Boolean buenasCondiciones;
 }

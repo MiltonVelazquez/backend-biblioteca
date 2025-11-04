@@ -1,4 +1,3 @@
-// src/main/java/mds/biblioteca/model/Multa.java
 package mds.biblioteca.model;
 
 import jakarta.persistence.*;
@@ -6,28 +5,27 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
-@Data // [cite: 144]
+@Data 
 public class Multa {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idMulta; // [cite: 13]
+    private Long idMulta; 
     
-    private Double monto; // [cite: 14]
+    private Double monto; 
     
-    // --- Campos Requeridos por la Lógica de Negocio ---
     
-    private boolean pagada; // Para saber si está "pendiente" 
+    private boolean pagada; 
     
-    private LocalDate fechaGeneracion; // Para registro
+    private LocalDate fechaGeneracion; 
 
-    // --- Relaciones del Diagrama ---
+    
     
     @ManyToOne
-    @JoinColumn(name = "id_socio", referencedColumnName = "idSocio") // <-- CORREGIDO
+    @JoinColumn(name = "id_socio", referencedColumnName = "idSocio") 
     private Socio socio;
 
     @OneToOne
-    @JoinColumn(name = "id_prestamo", referencedColumnName = "idPrestamo") // <-- CORREGIDO
+    @JoinColumn(name = "id_prestamo", referencedColumnName = "idPrestamo") 
     private Prestamo prestamo;
 }

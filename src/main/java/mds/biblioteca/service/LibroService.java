@@ -17,10 +17,6 @@ public class LibroService {
     @Autowired
     private LibroRepository libroRepository;
 
-    /**
-     * Flujo "Préstamo" -> "Bibliotecario busca en sistema"[cite: 44].
-     * Busca libros por título Y que estén disponibles.
-     */
     @Transactional(readOnly = true)
     public List<Libro> buscarLibrosDisponibles(String titulo) {
         if (titulo == null || titulo.isBlank()) {
@@ -29,11 +25,8 @@ public class LibroService {
         return libroRepository.findByTituloContainingIgnoreCaseAndEstado(titulo, "Disponible");
     }
 
-    // --- Métodos CRUD Estándar para LibroController ---
-
     @Transactional
     public Libro crearLibro(Libro libro) {
-        // Asegurarse de que el estado inicial sea válido
         if (libro.getEstado() == null) {
             libro.setEstado("Disponible");
         }
@@ -66,7 +59,6 @@ public class LibroService {
     @Transactional
     public void eliminarLibro(Long id) {
         Libro libro = obtenerPorId(id);
-        // (Aquí se podría verificar que el libro no esté "Prestado")
         if (libro.getEstado().equalsIgnoreCase("Prestado")) {
             throw new RuntimeException("No se puede eliminar un libro que está actualmente prestado.");
         }

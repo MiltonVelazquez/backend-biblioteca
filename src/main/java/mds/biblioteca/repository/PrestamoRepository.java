@@ -1,4 +1,3 @@
-// src/main/java/com/utn/frre/biblioteca/repository/PrestamoRepository.java
 package mds.biblioteca.repository;
 
 import mds.biblioteca.model.Libro;

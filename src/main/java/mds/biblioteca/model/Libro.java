@@ -5,20 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Set;
 
-// --- ¡AÑADE ESTAS DOS IMPORTACIONES! ---
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
 @Data
 @NoArgsConstructor
-// --- ¡AÑADE ESTA ANOTACIÓN! ---
-// 1. Intercepta todos los "DELETE" y los convierte en "UPDATE"
-@SQLDelete(sql = "UPDATE libro SET activo = false WHERE id_libro = ?")
-// --- ¡AÑADE ESTA ANOTACIÓN! ---
-// 2. Hace que CADA consulta (findAll, findById, etc.) 
-//    solo traiga los que tengan "activo = true".
-@Where(clause = "activo = true")
+@SQLDelete(sql = "UPDATE libro SET activo = false WHERE id_libro = ?") // al eliminar un libro lo desactiva
+@Where(clause = "activo = true") // esto es para que se listen solo los libros activos
 public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
